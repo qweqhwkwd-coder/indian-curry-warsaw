@@ -1,28 +1,11 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import Arrow from '../../components/Arrow.astro';
-import { languages, copy, dishes, langIndex, type Lang } from '../../i18n/content';
-export function getStaticPaths() { return languages.map((lang) => ({ params: { lang } })); }
-const lang = Astro.params.lang as Lang;
-const t = copy[lang]; const i = langIndex(lang); const h = t.home;
-const orderUrl = 'https://indian-curry-rownolegla.order.app.hd.digital/menus';
+import BaseLayout from '../../layouts/BaseLayout.astro'; import Header from '../../components/Header.astro'; import Footer from '../../components/Footer.astro'; import Arrow from '../../components/Arrow.astro'; import { languages, copy, dishes, langIndex, type Lang } from '../../i18n/content';
+export function getStaticPaths(){return languages.map(lang=>({params:{lang}}))}; const lang=Astro.params.lang as Lang; const t=copy[lang]; const i=langIndex(lang); const orderUrl='https://indian-curry-rownolegla.order.app.hd.digital/menus';
 ---
-<BaseLayout {lang} title={`${t.name} | ${t.hero[0]} ${t.hero[1]}`} description={t.lead}>
-  <Header {lang}/>
-  <main id="main">
-    <section class="new-hero">
-      <div class="hero-orb one"></div><div class="hero-orb two"></div>
-      <div class="hero-meta"><span>WARSZAWA / OCHOTA</span></div>
-      <div class="hero-title"><p class="hero-kicker">{t.name} <b>●</b> {h.kitchen}</p><h1>{t.hero[0]} <em>{t.hero[1]}</em></h1><p>{t.lead}</p><a class="hero-order" href={orderUrl} target="_blank" rel="noopener noreferrer"><span>{t.order}</span><b><Arrow /></b></a></div>
-      <figure class="hero-photo"><img src="/images/hero-curry.jpg" width="1600" height="1067" alt="Indian curry with rice and spices" fetchpriority="high"/><figcaption set:html={h.cooked}/></figure>
-      <div class="hero-footer"><span>{h.open} · {t.hours}</span><span>{h.scroll} ↓</span></div>
-    </section>
-    <section class="tape"><span>{h.tape[0]}</span><b>✦</b><span>{h.tape[1]}</span><b>✦</b><span>{h.tape[2]}</span><b>✦</b><span>{h.tape[0]}</span></section>
-    <section class="menu-editorial"><div class="menu-heading"><p>{h.start}</p><h2 set:html={h.choose}/><a href={`/${lang}/menu`}>{t.nav[0]} <b><Arrow /></b></a></div><div class="dish-stack">{dishes.map((dish, n) => <article class={`dish dish-${n + 1}`}><span class="dish-no">0{n + 1}</span><div><p>{dish.tag[i]}</p><h3>{dish.name}</h3><small>{dish.text[i]}</small></div><strong>{dish.price}</strong></article>)}</div></section>
-    <section class="heat-section" id="story"><div class="heat-number">03</div><div class="heat-copy"><p>{h.heat}</p><h2>{t.spiceTitle}</h2><span>{t.spiceLead}</span></div><div class="heat-scale">{h.levels.map((level, index) => <div><b>0{index + 1}</b><span>{level}</span></div>)}</div></section>
-    <section class="visit-new"><div class="visit-card"><p>{h.hungry}</p><h2>{t.visitTitle}</h2><div><span><b>{h.address}</b>{t.address}</span><span><b>{h.hoursLabel}</b>{t.hours}</span></div><a href={orderUrl} target="_blank" rel="noopener noreferrer">{t.order} <Arrow /></a></div><a class="address-graphic" href="https://maps.app.goo.gl/VK15ZGabbGj6RU1M7" target="_blank" rel="noopener noreferrer"><span>Równoległa</span><b>2</b><small>{t.map} <Arrow /></small></a></section>
-  </main>
-  <Footer {lang}/>
-</BaseLayout>
+<BaseLayout {lang} title={`${t.name} | ${t.hero[0]} ${t.hero[1]}`} description={t.lead}><Header {lang}/><main id="main">
+  <section class="ritual-hero"><div class="ritual-hero__copy"><p>{t.name} · Warszawa</p><h1>{t.hero[0]} <em>{t.hero[1]}</em></h1><span>{t.lead}</span><a href={orderUrl} target="_blank" rel="noopener noreferrer">{t.order} <Arrow /></a></div></section>
+  <section class="ritual-intro"><p>INDIAN CURRY 2</p><h2>{t.menuTitle}</h2><span>{t.menuLead}</span></section>
+  <section class="ritual-menu"><div class="ritual-menu__heading"><p>{t.nav[0]}</p><h2>Butter chicken,<br/><em>paneer i tandoor.</em></h2><a href={`/${lang}/menu`}>{t.nav[0]} <Arrow /></a></div><div class="ritual-dishes">{dishes.map(d=><article><p>{d.tag[i]}</p><h3>{d.name}</h3><span>{d.text[i]}</span><strong>{d.price}</strong></article>)}</div></section>
+  <section class="ritual-story" id="story"><div class="ritual-story__image"></div><div><p>{t.nav[1]}</p><h2>{t.spiceTitle}</h2><span>{t.spiceLead}</span><ul>{t.home.levels.map((level,n)=><li><b>0{n+1}</b>{level}</li>)}</ul></div></section>
+  <section class="ritual-visit"><div><p>{t.nav[2]}</p><h2>{t.visitTitle}</h2><span><b>{t.home.address}</b>{t.address}</span><span><b>{t.home.hoursLabel}</b>{t.hours}</span><a href="https://maps.app.goo.gl/VK15ZGabbGj6RU1M7" target="_blank" rel="noopener noreferrer">{t.map} <Arrow /></a></div><div class="ritual-visit__photo"></div></section>
+</main><Footer {lang}/></BaseLayout>
