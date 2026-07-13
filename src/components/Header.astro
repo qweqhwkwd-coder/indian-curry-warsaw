@@ -1,9 +1,16 @@
 ---
 import { languages, copy, type Lang } from '../i18n/content';
-import Logo from './Logo.astro';
-import Arrow from './Arrow.astro';
-const { lang } = Astro.props as { lang: Lang };
+const { lang, light = false } = Astro.props as { lang: Lang; light?: boolean };
 const t = copy[lang];
 const orderUrl = 'https://indian-curry-rownolegla.order.app.hd.digital/menus';
+const suffix = Astro.url.pathname.replace(new RegExp(`^/${lang}(?=/|$)`), '') || '/';
 ---
-<a class="skip" href="#main">{t.home.skip}</a><header class="header"><a class="brand" href={`/${lang}/`} aria-label="Indian Curry 2"><Logo /></a><nav aria-label={t.home.navigation}><a href={`/${lang}/menu`}>{t.nav[0]}</a><a href={`/${lang}/#story`}>{t.nav[1]}</a><a href={`/${lang}/visit`}>{t.nav[2]}</a></nav><div class="tools"><div class="languages" aria-label={t.home.language}>{languages.map((item) => <a class:list={{active:item === lang}} href={`/${item}/`} lang={item}>{item === 'hi' ? 'हिं' : item.toUpperCase()}</a>)}</div><a class="order" href={orderUrl} target="_blank" rel="noopener noreferrer">{t.order} <Arrow /></a></div></header>
+<a class="skip-link" href="#main">{t.skip}</a>
+<header class:list={['site-header', { 'site-header--light': light }]}>
+  <a class="brand" href={`/${lang}/`} aria-label={t.name}><span class="brand__mark" aria-hidden="true">✦</span><span>INDIAN<br /><b>CURRY</b></span></a>
+  <nav aria-label="Primary navigation"><a href={`/${lang}/menu`}>{t.nav.menu}</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a></nav>
+  <div class="header-actions">
+    <div class="language-switcher" aria-label={t.language}>{languages.map((item) => <a class:list={{ active: item === lang }} lang={item} href={`/${item}${suffix}`}>{item === 'hi' ? 'हि' : item.toUpperCase()}</a>)}</div>
+    <a class="header-order" href={orderUrl} target="_blank" rel="noopener noreferrer">{t.order}<span aria-hidden="true">↗</span></a>
+  </div>
+</header>
