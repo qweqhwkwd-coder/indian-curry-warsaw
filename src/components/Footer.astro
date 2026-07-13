@@ -1,5 +1,6 @@
 ---
 import { copy, type Lang } from '../i18n/content';
+import Logo from './Logo.astro';
 const { lang } = Astro.props as { lang: Lang }; const t = copy[lang];
 ---
-<footer><a class="brand" href={`/${lang}/`}><span>IC</span>Indian Curry <i>2</i></a><p>{t.footer} · {t.address}</p><a href="https://indian-curry-rownolegla.order.app.hd.digital/menus" target="_blank" rel="noopener noreferrer">{t.order} ↗</a></footer>
+<footer><a class="brand" href={`/${lang}/`} aria-label="Indian Curry 2"><Logo compact /></a><p>{t.footer} · {t.address}</p><a href="https://indian-curry-rownolegla.order.app.hd.digital/menus" target="_blank" rel="noopener noreferrer">{t.order} ↗</a></footer>
