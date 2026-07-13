@@ -1,0 +1,7 @@
+---
+import '../styles/global.css';
+import { languages, copy, type Lang } from '../i18n/content';
+const { lang, title, description } = Astro.props as { lang: Lang; title: string; description: string };
+const base = Astro.url.origin;
+---
+<!doctype html><html lang={lang}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="description" content={description}><meta name="theme-color" content="#192318"><title>{title}</title>{languages.map((item) => <link rel="alternate" hreflang={item} href={`${base}/${item}/`} />)}<link rel="alternate" hreflang="x-default" href={`${base}/pl/`} /><meta property="og:type" content="website"><meta property="og:locale" content={copy[lang].locale}><meta property="og:title" content={title}><meta property="og:description" content={description}><meta property="og:image" content={`${base}/images/hero-curry.jpg`}><script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Restaurant',name:'Indian Curry 2',servesCuisine:'Indian',priceRange:'$$',address:{'@type':'PostalAddress',streetAddress:'Równoległa 2',addressLocality:'Warszawa',postalCode:'02-235',addressCountry:'PL'},openingHours:'Mo-Su 10:00-22:00',hasMenu:'https://indian-curry-rownolegla.order.app.hd.digital/menus'})}></script></head><body><slot /></body></html>
