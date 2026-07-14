@@ -82,7 +82,7 @@ export const copy: Record<Lang, Content> = {
     menuPageTitle: 'Co dziś <em>zamawiasz?</em>',
     menuPageLead:
       'Nasze najczęściej zamawiane dania z tandoora, garnka i patelni.',
-    menuPageNote: 'Pełna karta z cenami jest w systemie zamówień.',
+    menuPageNote: 'To nasze najczęściej zamawiane dania. Pełną kartę i zamówienie znajdziesz w systemie online.',
     visitPageTitle: 'Dobre curry jest <em>blisko.</em>',
     visitPageLead:
       'Przyjdź na lunch, kolację albo odbierz zamówienie po drodze do domu.',
@@ -122,7 +122,7 @@ export const copy: Record<Lang, Content> = {
     menuPageTitle: 'What are you <em>ordering today?</em>',
     menuPageLead:
       'The dishes people order most — from the tandoor, the pot and the pan.',
-    menuPageNote: 'The full menu with prices is in our ordering system.',
+    menuPageNote: 'These are our most-ordered dishes. The complete menu and ordering are in the online system.',
     visitPageTitle: 'Great curry is <em>close by.</em>',
     visitPageLead:
       'Join us for lunch or dinner, or collect an order on your way home.',
@@ -162,7 +162,7 @@ export const copy: Record<Lang, Content> = {
     menuPageTitle: 'आज क्या <em>ऑर्डर करेंगे?</em>',
     menuPageLead:
       'सबसे ज़्यादा ऑर्डर होने वाले व्यंजन — तंदूर, कढ़ाई और पैन से।',
-    menuPageNote: 'पूरा मेन्यू और क़ीमतें ऑर्डर सिस्टम में हैं।',
+    menuPageNote: 'ये हमारे सबसे लोकप्रिय व्यंजन हैं। पूरा मेन्यू और ऑर्डर ऑनलाइन सिस्टम में है।',
     visitPageTitle: 'अच्छी करी <em>पास ही है।</em>',
     visitPageLead:
       'लंच, डिनर या घर जाते समय टेकअवे के लिए आइए।',
@@ -204,86 +204,157 @@ export const favourites: { name: string; veg: boolean; desc: L }[] = [
   },
 ];
 
-export type Dish = { name: string; veg: boolean; spicy?: boolean };
-export type MenuCategory = { id: string; title: L; items: Dish[] };
-
 /**
- * On-page menu. Dish names are the internationally used names (kept untranslated,
- * as they appear on Polish menus too); category titles are localised.
- * No prices here on purpose — prices live in the ordering system.
+ * On-page menu — the actual dishes and prices (PLN) from the restaurant's own
+ * ordering system, curated to the most popular items. Dish names are the
+ * internationally used names (kept untranslated, as on the Polish menu);
+ * category titles and notes are localised. `veg` omitted = protein is a choice
+ * (see the category note); the full card lives in the ordering system.
  */
+export type Dish = { name: string; veg?: boolean; spicy?: boolean; price?: number };
+export type MenuCategory = { id: string; title: L; note?: L; items: Dish[] };
+
 export const menu: MenuCategory[] = [
   {
-    id: 'tandoor',
-    title: { pl: 'Z tandoora', en: 'From the tandoor', hi: 'तंदूर से' },
+    id: 'lunch',
+    title: { pl: 'Lunch', en: 'Lunch', hi: 'लंच' },
+    note: {
+      pl: 'W dni powszednie 11:00–16:00.',
+      en: 'Weekdays 11:00–16:00.',
+      hi: 'सोम–शुक्र 11:00–16:00।',
+    },
     items: [
-      { name: 'Chicken Tikka', veg: false },
-      { name: 'Tandoori Chicken', veg: false },
-      { name: 'Seekh Kebab', veg: false, spicy: true },
-      { name: 'Paneer Tikka', veg: true },
+      { name: 'Methi Chicken', veg: false, price: 26 },
+      { name: 'Chicken Tikka Butter Masala', veg: false, price: 26 },
+      { name: 'Dal Tadka', veg: true, price: 26 },
+    ],
+  },
+  {
+    id: 'starters',
+    title: { pl: 'Przystawki', en: 'Starters', hi: 'स्टार्टर' },
+    items: [
+      { name: 'Vegetable Samosa', veg: true, price: 18 },
+      { name: 'Onion Bhaji', veg: true, price: 20 },
+      { name: 'Mix Vegetable Pakora', veg: true, price: 23 },
+      { name: 'Paneer Tikka', veg: true, price: 28 },
+      { name: 'Chicken Tikka', veg: false, price: 28 },
+      { name: 'Tandoori Chicken', veg: false, price: 30 },
+      { name: 'Chicken 65', veg: false, spicy: true, price: 34 },
+      { name: 'Chicken Lollypop', veg: false, price: 30 },
+      { name: 'Prawn Tikka', veg: false, price: 36 },
+      { name: 'Fish Tikka (Salmon)', veg: false, price: 50 },
+    ],
+  },
+  {
+    id: 'soups',
+    title: { pl: 'Zupy', en: 'Soups', hi: 'सूप' },
+    items: [
+      { name: 'Dal Shorba', veg: true, price: 18 },
+      { name: 'Tomato Soup', veg: true, price: 18 },
+      { name: 'Chicken Soup', veg: false, price: 20 },
+      { name: 'Mutton Soup', veg: false, price: 23 },
     ],
   },
   {
     id: 'curries',
     title: { pl: 'Curry', en: 'Curries', hi: 'करी' },
+    note: {
+      pl: 'Wybierz sos i dodatek: warzywa 30 · paneer 33 · kurczak 36 · ryba 37 · jagnięcina 44 · krewetki 44 zł.',
+      en: 'Pick a sauce and a filling: veg 30 · paneer 33 · chicken 36 · fish 37 · lamb 44 · prawns 44 zł.',
+      hi: 'सॉस और फ़िलिंग चुनें: सब्ज़ी 30 · पनीर 33 · चिकन 36 · मछली 37 · मटन 44 · झींगा 44 zł.',
+    },
     items: [
-      { name: 'Butter Chicken', veg: false },
-      { name: 'Chicken Tikka Masala', veg: false },
-      { name: 'Lamb Rogan Josh', veg: false },
-      { name: 'Lamb Vindaloo', veg: false, spicy: true },
-      { name: 'Chicken Korma', veg: false },
-      { name: 'Chicken Madras', veg: false, spicy: true },
+      { name: 'Butter Masala' },
+      { name: 'Tikka Masala' },
+      { name: 'Korma' },
+      { name: 'Jalfrezi', spicy: true },
+      { name: 'Kadai' },
+      { name: 'Madras', spicy: true },
+      { name: 'Vindaloo', spicy: true },
+      { name: 'Curry (coconut)' },
+      { name: 'Methi' },
+      { name: 'Spinach (Palak)' },
+      { name: 'Mango' },
+      { name: 'Chilli', spicy: true },
     ],
   },
   {
     id: 'vegetarian',
-    title: { pl: 'Wegetariańskie', en: 'Vegetarian', hi: 'शाकाहारी' },
+    title: { pl: 'Dania wegetariańskie', en: 'Vegetarian', hi: 'शाकाहारी' },
     items: [
-      { name: 'Palak Paneer', veg: true },
-      { name: 'Paneer Butter Masala', veg: true },
-      { name: 'Dal Makhani', veg: true },
-      { name: 'Chana Masala', veg: true },
-      { name: 'Aloo Gobi', veg: true },
-      { name: 'Malai Kofta', veg: true },
+      { name: 'Dal Makhani', veg: true, price: 30 },
+      { name: 'Chana Masala', veg: true, price: 30 },
+      { name: 'Aloo Gobi Matar', veg: true, price: 30 },
+      { name: 'Vegetable Kofta', veg: true, price: 31 },
+      { name: 'Matar Paneer', veg: true, price: 33 },
+      { name: 'Matar Mushroom', veg: true, price: 33 },
+    ],
+  },
+  {
+    id: 'biryani',
+    title: { pl: 'Biryani', en: 'Biryani', hi: 'बिरयानी' },
+    note: {
+      pl: 'Hyderabadi, aromatyczny ryż basmati.',
+      en: 'Hyderabadi style, fragrant basmati rice.',
+      hi: 'हैदराबादी अंदाज़, ख़ुशबूदार बासमती।',
+    },
+    items: [
+      { name: 'Vegetable Biryani', veg: true, price: 33 },
+      { name: 'Chicken Biryani', veg: false, price: 40 },
+      { name: 'Lamb Biryani', veg: false, price: 45 },
+      { name: 'Prawn Biryani', veg: false, price: 50 },
     ],
   },
   {
     id: 'rice',
-    title: { pl: 'Ryż i biryani', en: 'Rice & biryani', hi: 'चावल और बिरयानी' },
+    title: { pl: 'Ryż', en: 'Rice', hi: 'चावल' },
     items: [
-      { name: 'Chicken Biryani', veg: false },
-      { name: 'Vegetable Biryani', veg: true },
-      { name: 'Jeera Rice', veg: true },
-      { name: 'Basmati Rice', veg: true },
+      { name: 'Plain Rice', veg: true, price: 10 },
+      { name: 'Jeera Rice', veg: true, price: 15 },
+      { name: 'Lemon Rice', veg: true, price: 16 },
+      { name: 'Methi Pulao', veg: true, price: 18 },
+      { name: 'Egg Fried Rice', veg: false, price: 22 },
     ],
   },
   {
     id: 'breads',
-    title: { pl: 'Chlebki', en: 'Breads', hi: 'रोटी और नान' },
+    title: { pl: 'Placki z tandoora', en: 'Tandoor breads', hi: 'रोटी और नान' },
     items: [
-      { name: 'Butter Naan', veg: true },
-      { name: 'Garlic Naan', veg: true },
-      { name: 'Cheese Naan', veg: true },
-      { name: 'Aloo Paratha', veg: true },
+      { name: 'Plain Naan', veg: true, price: 10 },
+      { name: 'Butter Naan', veg: true, price: 12 },
+      { name: 'Garlic Naan', veg: true, price: 14 },
+      { name: 'Coriander Naan', veg: true, price: 14 },
+      { name: 'Tandoori Roti', veg: true, price: 10 },
+      { name: 'Lachha Paratha', veg: true, price: 13 },
+      { name: 'Onion Kulcha', veg: true, price: 21 },
     ],
   },
   {
     id: 'sides',
-    title: { pl: 'Przystawki i dodatki', en: 'Starters & sides', hi: 'स्टार्टर और साइड' },
+    title: { pl: 'Dodatki', en: 'Sides', hi: 'साइड' },
     items: [
-      { name: 'Vegetable Samosa', veg: true },
-      { name: 'Onion Bhaji', veg: true },
-      { name: 'Papadum', veg: true },
-      { name: 'Raita', veg: true },
+      { name: 'Roasted Papad', veg: true, price: 8 },
+      { name: 'Masala Papad', veg: true, price: 12 },
+      { name: 'Mix Raita', veg: true, price: 14 },
     ],
   },
   {
     id: 'sweets',
-    title: { pl: 'Desery i napoje', en: 'Sweets & drinks', hi: 'मिठाई और पेय' },
+    title: { pl: 'Desery', en: 'Desserts', hi: 'मिठाई' },
     items: [
-      { name: 'Gulab Jamun', veg: true },
-      { name: 'Mango Lassi', veg: true },
-      { name: 'Masala Chai', veg: true },
+      { name: 'Gulab Jamun', veg: true, price: 15 },
+      { name: 'Kheer', veg: true, price: 18 },
+    ],
+  },
+  {
+    id: 'drinks',
+    title: { pl: 'Napoje', en: 'Drinks', hi: 'पेय' },
+    items: [
+      { name: 'Mango Lassi', veg: true, price: 14 },
+      { name: 'Salty Lassi', veg: true, price: 14 },
+      { name: 'Mango Juice', veg: true, price: 14 },
+      { name: 'Ginger Lemon Drink', veg: true, price: 15 },
+      { name: 'Soft drinks 500 ml', veg: true, price: 8 },
     ],
   },
 ];

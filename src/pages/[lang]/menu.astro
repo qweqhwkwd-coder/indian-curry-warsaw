@@ -38,12 +38,14 @@ const t = copy[lang];
       {menu.map((cat) => (
         <section class="menu-cat" id={cat.id}>
           <h2>{cat.title[lang]}</h2>
+          {cat.note && <p class="menu-cat-note">{cat.note[lang]}</p>}
           <ul>
             {cat.items.map((dish) => (
               <li class="menu-row">
-                <Mark veg={dish.veg} {lang} />
+                {typeof dish.veg === 'boolean' && <Mark veg={dish.veg} {lang} />}
                 <span class="menu-row-name">{dish.name}</span>
                 {dish.spicy && <span class="chili-mark" role="img" aria-label={t.spicyLabel}></span>}
+                {dish.price != null && <span class="menu-row-price">{dish.price} zł</span>}
               </li>
             ))}
           </ul>

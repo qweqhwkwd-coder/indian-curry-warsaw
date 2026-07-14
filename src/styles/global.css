@@ -409,15 +409,25 @@ em { color: var(--turmeric); font-style: italic; }
   border-bottom: 2px solid var(--ink);
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
+.menu-cat-note {
+  margin: 0.7rem 0 0.3rem;
+  color: var(--clay);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
 .menu-row {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.6rem;
   padding: 0.7rem 0;
   border-bottom: 1px solid #2418121a;
 }
-.menu-row-name { font-weight: 600; font-size: 1rem; }
-.menu-row .chili-mark { margin-left: auto; }
+.menu-row-name { flex: 1; font-weight: 600; font-size: 1rem; }
+.menu-row-price {
+  flex: none;
+  color: var(--chili);
+  font: 500 0.86rem/1 var(--mono);
+}
 
 .menu-foot {
   display: grid;
