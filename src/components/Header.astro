@@ -1,4 +1,15 @@
 ---
-import {copy,languages,type Lang} from '../i18n/content'; import Logo from './Logo.astro'; const {lang}=Astro.props as {lang:Lang}; const t=copy[lang]; const suffix=Astro.url.pathname.replace(new RegExp(`^/${lang}(?=/|$)`),'')||'/'; const order='https://indian-curry-rownolegla.order.app.hd.digital/menus';
+import { copy, languages, type Lang } from '../i18n/content';
+import Logo from './Logo.astro';
+const { lang, light = false } = Astro.props as { lang: Lang; light?: boolean };
+const t = copy[lang];
+const suffix = Astro.url.pathname.replace(new RegExp(`^/${lang}(?=/|$)`), '') || '/';
+const order = 'https://indian-curry-rownolegla.order.app.hd.digital/menus';
 ---
-<a class="skip" href="#main">{t.skip}</a><header class="header"><a class="brand" href={`/${lang}/`} aria-label={t.name}><Logo/></a><nav class="nav" aria-label="Main navigation"><a href={`/${lang}/menu`}>{t.nav.menu}</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a></nav><div class="header-tools"><div class="languages" aria-label={t.language}>{languages.map(item=><a class:list={{active:item===lang}} href={`/${item}${suffix}`} lang={item}>{item==='hi'?'हि':item.toUpperCase()}</a>)}</div><a class="header-cta" href={order} target="_blank" rel="noopener noreferrer">{t.order}<span>↗</span></a><details class="mobile-menu"><summary aria-label="Menu">☰</summary><div><a href={`/${lang}/menu`}>{t.nav.menu}</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a><a href={order} target="_blank" rel="noopener noreferrer">{t.order} ↗</a></div></details></div></header>
+<a class="skip" href="#main">{t.skip}</a>
+<header class:list={['header', { 'header--light': light }]}>
+  <a class="brand" href={`/${lang}/`} aria-label={t.name}><Logo /></a>
+  <nav class="nav" aria-label="Main navigation"><a href={order} target="_blank" rel="noopener noreferrer">{t.nav.menu} ↗</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a></nav>
+  <div class="header-tools"><div class="languages" aria-label={t.language}>{languages.map((item) => <a class:list={{ active: item === lang }} href={`/${item}${suffix}`} lang={item}>{item === 'hi' ? 'हि' : item.toUpperCase()}</a>)}</div><a class="header-cta" href={order} target="_blank" rel="noopener noreferrer">{t.order}<span>↗</span></a><details class="mobile-menu"><summary aria-label="Menu">☰</summary><div><a href={order} target="_blank" rel="noopener noreferrer">{t.nav.menu} ↗</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a><a href={order} target="_blank" rel="noopener noreferrer">{t.order} ↗</a></div></details></div>
+</header>
+<style is:global>.header--light{color:var(--ink);border-color:#2718131e}.header--light .languages{border-color:#27181366}.header--light .languages .active{background:var(--ink);color:var(--cream)}</style>
