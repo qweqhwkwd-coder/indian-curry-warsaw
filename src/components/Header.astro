@@ -1,15 +1,63 @@
 ---
-import { copy, languages, type Lang } from '../i18n/content';
+import { copy, languages, ORDER_URL, type Lang } from '../i18n/content';
 import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+
 const { lang, light = false } = Astro.props as { lang: Lang; light?: boolean };
 const t = copy[lang];
+// Same path in the target language, for the language switcher.
 const suffix = Astro.url.pathname.replace(new RegExp(`^/${lang}(?=/|$)`), '') || '/';
-const order = 'https://indian-curry-rownolegla.order.app.hd.digital/menus';
+
+const links = [
+  { href: `/${lang}/menu`, label: t.nav.menu },
+  { href: `/${lang}/#story`, label: t.nav.story },
+  { href: `/${lang}/visit`, label: t.nav.visit },
+];
 ---
+
 <a class="skip" href="#main">{t.skip}</a>
+
 <header class:list={['header', { 'header--light': light }]}>
   <a class="brand" href={`/${lang}/`} aria-label={t.name}><Logo /></a>
-  <nav class="nav" aria-label="Main navigation"><a href={order} target="_blank" rel="noopener noreferrer">{t.nav.menu} ↗</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a></nav>
-  <div class="header-tools"><div class="languages" aria-label={t.language}>{languages.map((item) => <a class:list={{ active: item === lang }} href={`/${item}${suffix}`} lang={item}>{item === 'hi' ? 'हि' : item.toUpperCase()}</a>)}</div><a class="header-cta" href={order} target="_blank" rel="noopener noreferrer">{t.order}<span>↗</span></a><details class="mobile-menu"><summary aria-label="Menu">☰</summary><div><a href={order} target="_blank" rel="noopener noreferrer">{t.nav.menu} ↗</a><a href={`/${lang}/#story`}>{t.nav.story}</a><a href={`/${lang}/visit`}>{t.nav.visit}</a><a href={order} target="_blank" rel="noopener noreferrer">{t.order} ↗</a></div></details></div>
+
+  <nav class="nav" aria-label="Main navigation">
+    {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  </nav>
+
+  <div class="header-tools">
+    <div class="languages" role="group" aria-label={t.language}>
+      {languages.map((item) => (
+        <a class:list={{ active: item === lang }} href={`/${item}${suffix}`} lang={item}>
+          {item === 'hi' ? 'हि' : item.toUpperCase()}
+        </a>
+      ))}
+    </div>
+
+    <a class="header-cta" href={ORDER_URL} target="_blank" rel="noopener noreferrer">
+      {t.order}<Arrow />
+    </a>
+
+    <details class="mobile-menu">
+      <summary aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </summary>
+      <div>
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+        <a class="mobile-order" href={ORDER_URL} target="_blank" rel="noopener noreferrer">
+          {t.order} <Arrow />
+        </a>
+      </div>
+    </details>
+  </div>
 </header>
-<style is:global>.header--light{color:var(--ink);border-color:#2718131e}.header--light .languages{border-color:#27181366}.header--light .languages .active{background:var(--ink);color:var(--cream)}</style>
+
+<style is:global>
+  .header--light {
+    color: var(--ink);
+    border-color: #24181226;
+  }
+  .header--light .languages { border-color: #24181240; }
+  .header--light .languages .active { background: var(--ink); color: var(--cream); }
+</style>

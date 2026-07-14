@@ -1,5 +1,75 @@
 ---
-import '../styles/global.css'; import {copy,languages,type Lang} from '../i18n/content';
-const {lang,title,description}=Astro.props as {lang:Lang;title:string;description:string}; const t=copy[lang]; const path=Astro.url.pathname.replace(/^\/(pl|en|hi)/,'')||'/'; const url=Astro.url.toString();
+import '../styles/global.css';
+import { copy, languages, ORDER_URL, MAPS_URL, PHONE, type Lang } from '../i18n/content';
+
+const { lang, title, description } = Astro.props as {
+  lang: Lang;
+  title: string;
+  description: string;
+};
+const t = copy[lang];
+const path = Astro.url.pathname.replace(/^\/(pl|en|hi)/, '') || '/';
+const url = Astro.url.toString();
+const ogImage = new URL('/images/restaurant-hero.png', Astro.url.origin).toString();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: 'INDIAN CURRY WŁOCHY',
+  servesCuisine: 'Indian',
+  telephone: PHONE,
+  priceRange: '$$',
+  image: ogImage,
+  url: Astro.url.origin,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Równoległa 2',
+    postalCode: '02-232',
+    addressLocality: 'Warszawa',
+    addressCountry: 'PL',
+  },
+  openingHours: 'Mo-Su 11:00-22:00',
+  hasMenu: ORDER_URL,
+  sameAs: [MAPS_URL],
+};
+
+const fonts =
+  'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@500;600&display=swap';
 ---
-<!doctype html><html lang={lang}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="description" content={description}/><meta name="theme-color" content="#21130f"/><link rel="canonical" href={url}/>{languages.map(item=><link rel="alternate" hreflang={item} href={new URL(`/${item}${path}`,Astro.url.origin).toString()}/>)}<link rel="alternate" hreflang="x-default" href={new URL(`/pl${path}`,Astro.url.origin).toString()}/><meta property="og:type" content="website"/><meta property="og:locale" content={t.locale}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:image" content={new URL('/images/restaurant-hero.png',Astro.url.origin).toString()}/><title>{title}</title><script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Restaurant',name:'INDIAN CURRY WŁOCHY',servesCuisine:'Indian',telephone:'+48500091313',priceRange:'$$',address:{'@type':'PostalAddress',streetAddress:'Równoległa 2',postalCode:'02-232',addressLocality:'Warszawa',addressCountry:'PL'},openingHours:'Mo-Su 11:00-22:00',hasMenu:'https://indian-curry-rownolegla.order.app.hd.digital/menus',sameAs:['https://maps.app.goo.gl/4Qmb9Q32fz2zGqhP9']})}/></head><body><slot/></body></html>
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#191210" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={url} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={fonts} />
+
+    {languages.map((item) => (
+      <link
+        rel="alternate"
+        hreflang={item}
+        href={new URL(`/${item}${path}`, Astro.url.origin).toString()}
+      />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(`/pl${path}`, Astro.url.origin).toString()} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={t.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

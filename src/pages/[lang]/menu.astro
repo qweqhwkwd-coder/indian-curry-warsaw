@@ -1,4 +1,63 @@
 ---
-export function getStaticPaths() { return ['pl', 'en', 'hi'].map((lang) => ({ params: { lang } })); }
-return Astro.redirect('https://indian-curry-rownolegla.order.app.hd.digital/menus', 302);
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Arrow from '../../components/Arrow.astro';
+import Mark from '../../components/Mark.astro';
+import { languages, copy, menu, ORDER_URL, type Lang } from '../../i18n/content';
+
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = copy[lang];
 ---
+
+<BaseLayout {lang} title={`${t.nav.menu} — ${t.name}`} description={t.menuPageLead}>
+  <Header {lang} light />
+
+  <main id="main" class="page menu-page">
+    <section class="page-head">
+      <p class="kicker">{t.nav.menu}</p>
+      <h1 set:html={t.menuPageTitle} />
+      <p class="page-lead">{t.menuPageLead}</p>
+
+      <ul class="legend" aria-hidden="true">
+        <li><span class="mark mark--veg"></span> {t.vegLabel}</li>
+        <li><span class="mark mark--nonveg"></span> {t.nonvegLabel}</li>
+        <li><span class="chili-mark"></span> {t.spicyLabel}</li>
+      </ul>
+
+      <a class="button" href={ORDER_URL} target="_blank" rel="noopener noreferrer">
+        {t.order} <Arrow />
+      </a>
+    </section>
+
+    <div class="menu-columns">
+      {menu.map((cat) => (
+        <section class="menu-cat" id={cat.id}>
+          <h2>{cat.title[lang]}</h2>
+          <ul>
+            {cat.items.map((dish) => (
+              <li class="menu-row">
+                <Mark veg={dish.veg} {lang} />
+                <span class="menu-row-name">{dish.name}</span>
+                {dish.spicy && <span class="chili-mark" role="img" aria-label={t.spicyLabel}></span>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+
+    <section class="menu-foot">
+      <p>{t.menuPageNote}</p>
+      <a class="button button-dark" href={ORDER_URL} target="_blank" rel="noopener noreferrer">
+        {t.order} <Arrow />
+      </a>
+    </section>
+  </main>
+
+  <Footer {lang} />
+</BaseLayout>

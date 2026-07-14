@@ -1,4 +1,26 @@
 ---
-import {copy,type Lang} from '../i18n/content'; import Logo from './Logo.astro'; const {lang}=Astro.props as {lang:Lang}; const t=copy[lang];
+import { copy, PHONE, PHONE_DISPLAY, MAPS_URL, type Lang } from '../i18n/content';
+import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+const { lang } = Astro.props as { lang: Lang };
+const t = copy[lang];
 ---
-<footer class="footer"><div><a class="brand" href={`/${lang}/`} aria-label={t.name}><Logo/></a><p>{t.footer}</p></div><address>Równoległa 2<br/>02-232 Warszawa<br/><a href="tel:+48500091313">+48 500 091 313</a></address><a class="footer-link" href="https://maps.app.goo.gl/4Qmb9Q32fz2zGqhP9" target="_blank" rel="noopener noreferrer">Google Maps ↗</a></footer>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <a class="brand" href={`/${lang}/`} aria-label={t.name}><Logo /></a>
+    <p>{t.footer}</p>
+  </div>
+
+  <address>
+    Równoległa 2<br />02-232 Warszawa<br />
+    <a href={`tel:${PHONE}`}>{PHONE_DISPLAY}</a>
+  </address>
+
+  <div class="footer-actions">
+    <a class="footer-link" href={MAPS_URL} target="_blank" rel="noopener noreferrer">
+      Google Maps <Arrow />
+    </a>
+    <p class="footer-rights">© 2025 {t.name}. {t.rights}</p>
+  </div>
+</footer>

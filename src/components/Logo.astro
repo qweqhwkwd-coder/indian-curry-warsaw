@@ -1,1 +1,28 @@
-<span class="logo" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><path d="M7 22h30c0 8.5-5.5 14-15 14S7 30.5 7 22Z"/><path d="M5 20h34M14 11c0 3-2.5 4.4-2.5 7.2M22 7c0 4-3 5.5-3 10M30 11c0 3-2.5 4.4-2.5 7.2"/></svg><span>INDIAN<br/><b>CURRY</b></span></span>
+<span class="logo">
+  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+    <path d="M7 22h30c0 8.5-5.5 14-15 14S7 30.5 7 22Z" />
+    <path d="M5 20h34M14 11c0 3-2.5 4.4-2.5 7.2M22 7c0 4-3 5.5-3 10M30 11c0 3-2.5 4.4-2.5 7.2" />
+  </svg>
+  <span class="logo-word">INDIAN<br /><b>CURRY</b></span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .logo svg {
+    width: 34px;
+    height: 34px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+  .logo-word {
+    font: 700 0.66rem/0.9 var(--sans);
+    letter-spacing: 0.1em;
+  }
+  .logo-word b { color: var(--turmeric); }
+</style>

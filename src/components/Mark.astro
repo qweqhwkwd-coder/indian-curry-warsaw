@@ -1,0 +1,9 @@
+---
+// Indian FSSAI-style food marker: a green dot in a square for vegetarian,
+// a red-brown dot for dishes containing meat. Real regulatory symbol, used
+// here as the menu's structural language rather than decoration.
+import { copy, type Lang } from '../i18n/content';
+const { veg, lang } = Astro.props as { veg: boolean; lang: Lang };
+const label = veg ? copy[lang].vegLabel : copy[lang].nonvegLabel;
+---
+<span class:list={['mark', veg ? 'mark--veg' : 'mark--nonveg']} role="img" aria-label={label}></span>
